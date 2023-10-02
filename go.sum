@@ -1,2 +1,6 @@
+github.com/caleb-hoyne/slogctx v0.0.0-20231002010547-9ca7ffa88bd4 h1:hrGYhZmrcfTyTfQ9e07Ee4pvFxxJPJ5LHccuRL2z1Uk=
+github.com/caleb-hoyne/slogctx v0.0.0-20231002010547-9ca7ffa88bd4/go.mod h1:sfNe+Mxm3+LLII7hMFBH8QNnvzK+0VJVLbMX2s2eM2g=
+github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
+github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/mattn/go-sqlite3 v1.14.17 h1:mCRHCLDUBXgpKAqIKsaAaAsrAlbkeomtRFKXh2L6YIM=
 github.com/mattn/go-sqlite3 v1.14.17/go.mod h1:2eHXhiwb8IkHr+BDWZGa96P6+rkvnG63S2DGjv9HUNg=
