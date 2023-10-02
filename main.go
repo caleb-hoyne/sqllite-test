@@ -28,11 +28,6 @@ func main() {
 		panic(err)
 	}
 
-	//_, err = pool.Exec("INSERT INTO test VALUES (1, 'test')")
-	//if err != nil {
-	//	panic(err)
-	//}
-
 	nameHandler := &handler.RequestHandler{
 		R: &db.Repository{
 			DB: pool,
@@ -40,7 +35,7 @@ func main() {
 	}
 
 	mux := http.NewServeMux()
-	mux.Handle("/name", nameHandler)
+	mux.Handle("/name/", nameHandler)
 
 	s := http.Server{
 		Addr:    ":8080",

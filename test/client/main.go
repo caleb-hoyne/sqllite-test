@@ -50,5 +50,21 @@ func main() {
 			panic(err)
 		}
 		fmt.Println(resp.StatusCode)
+	case "put":
+		newName := os.Args[3]
+		req := handler.PostNameReq{
+			ID:   idStr,
+			Name: newName,
+		}
+		data, err := json.Marshal(req)
+		if err != nil {
+			panic(err)
+		}
+		httpReq, _ := http.NewRequest(http.MethodPut, fmt.Sprintf("http://localhost:8080/name/%s", newName), bytes.NewReader(data))
+		resp, err := http.DefaultClient.Do(httpReq)
+		if err != nil {
+			panic(err)
+		}
+		fmt.Println(resp.StatusCode)
 	}
 }

@@ -4,11 +4,13 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"github.com/caleb-hoyne/slogctx"
 	db "github.com/caleb-hoyne/sqllite-test/repository"
 	"log/slog"
 	"net/http"
 	"strconv"
+	"strings"
 )
 
 type GetNameResp struct {
@@ -23,6 +25,7 @@ type PostNameReq struct {
 type Repository interface {
 	GetNameByID(id int) (string, error)
 	StoreUser(id int, name string) error
+	UpdateUser(id int, newName string) error
 }
 
 type RequestHandler struct {
@@ -35,6 +38,8 @@ func (r *RequestHandler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 		r.handleGet(req, w)
 	case http.MethodPost:
 		r.handlePost(req, w)
+	case http.MethodPut:
+		r.handlePut(req, w)
 	default:
 		w.WriteHeader(http.StatusMethodNotAllowed)
 	}
@@ -86,6 +91,28 @@ func (r *RequestHandler) handleGet(req *http.Request, w http.ResponseWriter) {
 	err = json.NewEncoder(w).Encode(name)
 	if err != nil {
 		panic(err)
+	}
+}
+
+func (r *RequestHandler) handlePut(req *http.Request, w http.ResponseWriter) {
+	url := req.URL.Path
+	id := strings.TrimPrefix(url, "/name/")
+	if id == "" || req.URL.Path == "/name" {
+		r.handleError(req.Context(), fmt.Errorf("bad path to request: %s", req.URL.Path), http.StatusBadRequest, w)
+		return
+	}
+
+	var putReq PostNameReq
+	err := json.NewDecoder(req.Body).Decode(&putReq)
+	if err != nil {
+		r.handleError(req.Context(), err, http.StatusBadRequest, w)
+		return
+	}
+	ctx := slogctx.AddValues(req.Context(), slog.Int("id", putReq.ID))
+	err = r.R.UpdateUser(putReq.ID, putReq.Name)
+	if err != nil {
+		r.handleError(ctx, err, http.StatusInternalServerError, w)
+		return
 	}
 }
 
